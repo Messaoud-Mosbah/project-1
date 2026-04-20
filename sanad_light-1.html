@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SANAD - منصة سند الرقمية للقانون والابتكار</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e5fa8;
+            --primary-light: #3a7fd4;
+            --primary-pale: #dbeafe;
+            --accent: #f59e0b;
+            --accent-light: #fef3c7;
+            --bg: #f0f6ff;
+            --surface: #ffffff;
+            --surface-2: #f8faff;
+            --border: #d1e0f5;
+            --text-main: #1a2e4a;
+            --text-sub: #4a6280;
+            --text-muted: #8aa4c0;
+            --shadow-sm: 0 2px 8px rgba(30,95,168,0.08);
+            --shadow-md: 0 6px 24px rgba(30,95,168,0.12);
+            --shadow-lg: 0 16px 48px rgba(30,95,168,0.16);
+            --radius: 16px;
+            --font: 'Tajawal', sans-serif;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text-main);
+            direction: rtl;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed; top: -200px; right: -200px;
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, rgba(30,95,168,0.08) 0%, transparent 70%);
+            pointer-events: none; z-index: 0;
+        }
+        body::after {
+            content: '';
+            position: fixed; bottom: -150px; left: -150px;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(245,158,11,0.07) 0%, transparent 70%);
+            pointer-events: none; z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px; margin: 0 auto; padding: 0 24px;
+            position: relative; z-index: 1;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 0; position: fixed; top: 0; width: 100%;
+            z-index: 100; box-shadow: var(--shadow-sm); transition: all 0.3s;
+        }
+        .navbar { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-icon {
+            width: 42px; height: 42px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.1rem; font-weight: 800;
+            box-shadow: 0 4px 12px rgba(30,95,168,0.3);
+        }
+        .brand-name { font-size: 1.5rem; font-weight: 800; color: var(--primary); letter-spacing: 2px; }
+        .nav-links { display: flex; align-items: center; gap: 4px; }
+        .nav-links a {
+            color: var(--text-sub); text-decoration: none;
+            padding: 8px 16px; border-radius: 10px; font-size: 0.95rem; font-weight: 500;
+            display: flex; align-items: center; gap: 6px; transition: all 0.2s;
+        }
+        .nav-links a:hover { background: var(--primary-pale); color: var(--primary); }
+        .nav-links a i { font-size: 0.85rem; }
+        .social-top { display: flex; align-items: center; gap: 8px; }
+        .social-top a {
+            color: var(--text-muted); width: 36px; height: 36px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--surface-2); border: 1px solid var(--border);
+            font-size: 0.9rem; transition: all 0.2s; text-decoration: none;
+        }
+        .social-top a:hover {
+            background: var(--primary); color: white; border-color: var(--primary);
+            transform: translateY(-2px); box-shadow: 0 4px 12px rgba(30,95,168,0.25);
+        }
+
+        /* ===== TICKER ===== */
+        .ticker-wrap {
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            padding: 10px 0; overflow: hidden; white-space: nowrap;
+            margin-top: 70px;
+        }
+        .ticker-track { display: inline-block; animation: tickerScroll 25s linear infinite; }
+        .ticker-track span {
+            display: inline-block; color: white; font-size: 0.88rem;
+            font-weight: 600; padding: 0 28px; letter-spacing: 0.5px;
+        }
+        .ticker-track span i { color: var(--accent); margin: 0 6px; }
+        @keyframes tickerScroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        /* ===== HERO ===== */
+        .auth-section { padding: 72px 0 80px; position: relative; }
+        .hero-inner { display: flex; align-items: center; gap: 60px; }
+        .hero-text { flex: 1; }
+        .hero-visual { flex: 0 0 320px; display: flex; align-items: center; justify-content: center; }
+        .hero-illustration {
+            width: 290px; height: 310px;
+            background: linear-gradient(135deg, var(--primary-pale), #c7dcf7);
+            border-radius: 28px; display: flex; align-items: center; justify-content: center;
+            position: relative; box-shadow: var(--shadow-lg);
+            animation: floatAnim 4s ease-in-out infinite;
+        }
+        .hero-illustration .big-icon {
+            font-size: 7rem; color: var(--primary);
+            opacity: 0.12; position: absolute;
+        }
+        .hero-illustration .cards-stack { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 10px; }
+        .mini-card {
+            background: white; border-radius: 12px; padding: 11px 18px;
+            display: flex; align-items: center; gap: 12px;
+            box-shadow: var(--shadow-md); min-width: 210px;
+        }
+        .mini-card-icon {
+            width: 34px; height: 34px; border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem; color: white; flex-shrink: 0;
+        }
+        .mini-card-text { font-size: 0.8rem; font-weight: 700; color: var(--text-main); }
+        .mini-card-sub { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+        @keyframes floatAnim {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--accent-light); color: #92400e;
+            border: 1px solid #fcd34d; padding: 6px 18px;
+            border-radius: 50px; font-size: 0.85rem; font-weight: 600;
+            margin-bottom: 22px; animation: fadeInDown 0.6s ease;
+        }
+        .hero-badge i { color: var(--accent); }
+
+        .hero-text h1 {
+            font-size: clamp(1.8rem, 3.2vw, 2.7rem); font-weight: 800;
+            color: var(--text-main); line-height: 1.35; margin-bottom: 16px;
+            animation: fadeInUp 0.7s ease 0.1s both;
+        }
+        .hero-text h1 span { color: var(--primary); position: relative; }
+        .hero-text h1 span::after {
+            content: ''; position: absolute; bottom: 2px; right: 0; left: 0; height: 4px;
+            background: linear-gradient(90deg, var(--accent), transparent); border-radius: 2px;
+        }
+        .hero-text p {
+            font-size: 1.05rem; color: var(--text-sub); margin-bottom: 30px;
+            line-height: 1.75; animation: fadeInUp 0.7s ease 0.2s both;
+        }
+        .hero-btns {
+            display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+            animation: fadeInUp 0.7s ease 0.3s both;
+        }
+        .google-btn {
+            background: var(--surface); color: var(--text-main);
+            border: 1.5px solid var(--border); padding: 13px 28px;
+            font-size: 1rem; font-weight: 600; border-radius: 50px;
+            display: inline-flex; align-items: center; gap: 12px;
+            cursor: pointer; box-shadow: var(--shadow-md);
+            transition: all 0.3s; font-family: var(--font);
+        }
+        .google-btn:hover {
+            background: var(--primary); color: white; border-color: var(--primary);
+            box-shadow: var(--shadow-lg); transform: translateY(-2px);
+        }
+        .google-icon-wrap {
+            width: 28px; height: 28px; border-radius: 50%; background: var(--bg);
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.3s;
+        }
+        .google-icon-wrap img { height: 17px; }
+
+        .scroll-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: var(--primary); font-weight: 600; font-size: 0.95rem;
+            text-decoration: none; cursor: pointer; transition: gap 0.3s;
+            background: none; border: none; font-family: var(--font);
+        }
+        .scroll-btn:hover { gap: 14px; }
+        .arrow-down {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: var(--primary-pale);
+            display: flex; align-items: center; justify-content: center;
+            animation: bounceDown 1.5s ease-in-out infinite;
+        }
+        @keyframes bounceDown {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(5px); }
+        }
+
+        .hero-stats {
+            display: flex; gap: 32px; flex-wrap: wrap;
+            margin-top: 38px; padding-top: 30px;
+            border-top: 1px solid var(--border);
+            animation: fadeInUp 0.7s ease 0.4s both;
+        }
+        .stat-item { text-align: center; }
+        .stat-num { font-size: 1.8rem; font-weight: 800; color: var(--primary); display: block; }
+        .stat-label { font-size: 0.78rem; color: var(--text-muted); margin-top: 3px; }
+
+        /* ===== WHY SANAD ===== */
+        .why-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            padding: 64px 0; position: relative; overflow: hidden;
+        }
+        .why-section::before {
+            content: ''; position: absolute; top: -60px; left: -60px;
+            width: 300px; height: 300px; border-radius: 50%;
+            background: rgba(255,255,255,0.05); pointer-events: none;
+        }
+        .why-section::after {
+            content: ''; position: absolute; bottom: -80px; right: -40px;
+            width: 250px; height: 250px; border-radius: 50%;
+            background: rgba(255,255,255,0.04); pointer-events: none;
+        }
+        .why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+        .why-card {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: var(--radius); padding: 30px 26px; text-align: center;
+            transition: all 0.3s; backdrop-filter: blur(6px);
+        }
+        .why-card:hover {
+            background: rgba(255,255,255,0.18); transform: translateY(-5px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+        }
+        .why-icon {
+            width: 62px; height: 62px; background: rgba(255,255,255,0.15);
+            border-radius: 18px; display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 16px; font-size: 1.5rem; color: white;
+        }
+        .why-card h3 { color: white; font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
+        .why-card p { color: rgba(255,255,255,0.76); font-size: 0.88rem; line-height: 1.65; }
+
+        /* ===== SERVICES ===== */
+        .services-section {
+            padding: 80px 0; background: var(--surface);
+            border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+        .services-section::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary-light));
+        }
+        .section-header { text-align: center; margin-bottom: 52px; }
+        .section-tag {
+            display: inline-block; background: var(--primary-pale); color: var(--primary);
+            font-size: 0.78rem; font-weight: 700; padding: 4px 14px; border-radius: 50px;
+            margin-bottom: 12px; letter-spacing: 1px; text-transform: uppercase;
+        }
+        .section-title { font-size: 2rem; font-weight: 800; color: var(--text-main); margin-bottom: 10px; }
+        .section-sub { color: var(--text-muted); font-size: 0.98rem; }
+
+        .service-list { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+        .service-item {
+            background: var(--surface-2); border: 1.5px solid var(--border);
+            padding: 30px; border-radius: var(--radius);
+            display: flex; align-items: flex-start; gap: 20px;
+            transition: all 0.3s; position: relative; overflow: hidden;
+        }
+        .service-item::after {
+            content: attr(data-num);
+            position: absolute; bottom: -8px; left: 12px;
+            font-size: 4.5rem; font-weight: 800; color: var(--primary);
+            opacity: 0.06; line-height: 1; pointer-events: none; font-family: var(--font);
+        }
+        .service-item::before {
+            content: ''; position: absolute; top: 0; right: 0; left: 0; height: 3px;
+            border-radius: var(--radius) var(--radius) 0 0;
+            background: var(--card-color, var(--primary));
+            transform: scaleX(0); transform-origin: right; transition: transform 0.35s ease;
+        }
+        .service-item:hover::before { transform: scaleX(1); }
+        .service-item:hover {
+            border-color: var(--card-color, var(--primary));
+            box-shadow: var(--shadow-md); transform: translateY(-4px);
+        }
+        .service-icon-wrap {
+            width: 52px; height: 52px; border-radius: 13px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; position: relative; z-index: 1;
+        }
+        .service-icon-wrap i { font-size: 1.3rem; }
+        .service-details { position: relative; z-index: 1; }
+        .service-details h3 { font-size: 1.02rem; font-weight: 700; color: var(--text-main); margin-bottom: 9px; }
+        .service-details p { font-size: 0.88rem; color: var(--text-sub); line-height: 1.7; }
+
+        /* ===== GUIDE ===== */
+        .guide-section { padding: 80px 0; background: var(--bg); }
+        .guide-flex { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .guide-content {
+            background: var(--surface); padding: 34px; border-radius: var(--radius);
+            border: 1.5px solid var(--border); box-shadow: var(--shadow-sm);
+        }
+        .guide-content-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+        .guide-icon {
+            width: 44px; height: 44px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.1rem; flex-shrink: 0;
+        }
+        .guide-content h3 { font-size: 1.15rem; font-weight: 700; color: var(--text-main); }
+        .guide-content p { color: var(--text-sub); line-height: 1.8; font-size: 0.95rem; }
+        .guide-content ol { list-style: none; padding: 0; counter-reset: steps; }
+        .guide-content ol li {
+            counter-increment: steps;
+            display: flex; align-items: flex-start; gap: 14px;
+            padding: 12px 0; border-bottom: 1px solid var(--border);
+            color: var(--text-sub); font-size: 0.93rem; line-height: 1.65;
+        }
+        .guide-content ol li:last-child { border-bottom: none; }
+        .guide-content ol li::before {
+            content: counter(steps); min-width: 28px; height: 28px;
+            background: var(--primary-pale); color: var(--primary);
+            font-weight: 800; font-size: 0.82rem; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer { background: var(--text-main); color: #a8c0d8; padding: 50px 0 24px; }
+        .footer-inner {
+            display: flex; justify-content: space-between;
+            align-items: flex-start; gap: 40px; margin-bottom: 36px;
+        }
+        .footer-brand .brand-name-footer {
+            font-size: 1.8rem; font-weight: 800; color: white;
+            letter-spacing: 3px; margin-bottom: 10px;
+        }
+        .footer-brand p { font-size: 0.9rem; line-height: 1.6; max-width: 280px; color: #7a9ab8; }
+        .footer-section h4 {
+            color: white; font-size: 1rem; font-weight: 700; margin-bottom: 16px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .footer-section h4::before { content: ''; width: 4px; height: 18px; background: var(--accent); border-radius: 2px; }
+        .footer-location { display: flex; align-items: center; gap: 8px; color: #7a9ab8; font-size: 0.9rem; margin-bottom: 12px; }
+        .footer-location i { color: var(--accent); }
+        .footer-section p { font-size: 0.9rem; line-height: 1.9; color: #7a9ab8; }
+        .footer-section strong { color: #a8c0d8; }
+
+        .footer-social { display: flex; justify-content: center; gap: 14px; margin-bottom: 28px; }
+        .footer-social a {
+            width: 44px; height: 44px; border-radius: 12px;
+            background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+            color: #a8c0d8; display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; text-decoration: none; transition: all 0.25s;
+        }
+        .footer-social a:hover {
+            background: var(--primary); border-color: var(--primary); color: white;
+            transform: translateY(-4px); box-shadow: 0 6px 18px rgba(30,95,168,0.4);
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px; text-align: center; font-size: 0.85rem; color: #4a6880;
+        }
+
+        /* ===== FLOATING WHATSAPP BUTTON ===== */
+        .float-btn {
+            position: fixed; bottom: 28px; left: 28px; z-index: 200;
+            background: linear-gradient(135deg, #25d366, #1ebe5c);
+            color: white; width: 56px; height: 56px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.45rem; box-shadow: 0 6px 20px rgba(37,211,102,0.45);
+            text-decoration: none; transition: all 0.3s;
+            animation: pulseFloat 2.5s ease-in-out infinite;
+        }
+        .float-btn:hover { transform: scale(1.12); box-shadow: 0 10px 28px rgba(37,211,102,0.55); }
+        .float-tooltip {
+            position: absolute; left: 66px;
+            background: var(--text-main); color: white;
+            padding: 6px 14px; border-radius: 8px;
+            font-size: 0.82rem; font-weight: 600; white-space: nowrap;
+            opacity: 0; pointer-events: none; transition: opacity 0.25s;
+            font-family: var(--font);
+        }
+        .float-btn:hover .float-tooltip { opacity: 1; }
+        @keyframes pulseFloat {
+            0%, 100% { box-shadow: 0 6px 20px rgba(37,211,102,0.45); }
+            50% { box-shadow: 0 6px 28px rgba(37,211,102,0.7), 0 0 0 10px rgba(37,211,102,0.1); }
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 960px) {
+            .hero-inner { flex-direction: column; }
+            .hero-visual { display: none; }
+            .hero-text { text-align: center; }
+            .hero-btns { justify-content: center; }
+            .hero-stats { justify-content: center; }
+            .service-list { grid-template-columns: 1fr; }
+            .guide-flex { grid-template-columns: 1fr; }
+            .why-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .navbar { flex-wrap: wrap; gap: 12px; }
+            .nav-links { display: none; }
+            .footer-inner { flex-direction: column; gap: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container navbar">
+            <a href="#" class="logo">
+                <div class="logo-icon">S</div>
+                <span class="brand-name">SANAD</span>
+            </a>
+            <nav class="nav-links">
+                <a href="#about"><i class="fas fa-info-circle"></i> من نحن</a>
+                <a href="#services"><i class="fas fa-hand-holding-heart"></i> الخدمات</a>
+                <a href="#guide"><i class="fas fa-book"></i> دليل الاستخدام</a>
+                <a href="#contact"><i class="fas fa-envelope"></i> اتصل بنا</a>
+            </nav>
+            <div class="social-top">
+                <a href="https://facebook.com/sanad" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com/sanad" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://tiktok.com/@sanad" target="_blank"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- TICKER -->
+    <div class="ticker-wrap">
+        <div class="ticker-track">
+            <span>حماية فكرية <i class="fas fa-star"></i></span>
+            <span>ابتكار آمن <i class="fas fa-star"></i></span>
+            <span>استثمار ذكي <i class="fas fa-star"></i></span>
+            <span>براءات اختراع <i class="fas fa-star"></i></span>
+            <span>شراكات نجاح <i class="fas fa-star"></i></span>
+            <span>قانون رقمي <i class="fas fa-star"></i></span>
+            <span>حماية فكرية <i class="fas fa-star"></i></span>
+            <span>ابتكار آمن <i class="fas fa-star"></i></span>
+            <span>استثمار ذكي <i class="fas fa-star"></i></span>
+            <span>براءات اختراع <i class="fas fa-star"></i></span>
+            <span>شراكات نجاح <i class="fas fa-star"></i></span>
+            <span>قانون رقمي <i class="fas fa-star"></i></span>
+        </div>
+    </div>
+
+    <!-- HERO -->
+    <section class="auth-section">
+        <div class="container">
+            <div class="hero-inner">
+                <div class="hero-text">
+                    <div class="hero-badge">
+                        <i class="fas fa-star"></i>
+                        منصة الابتكار الجزائرية الأولى
+                    </div>
+                    <h1>مرحباً بك في منصة <span>SANAD</span><br>للابتكار الآمن</h1>
+                    <p>سجل دخولك الآن للبدء في حماية وتقديم مشاريعك المبتكرة للعالم — بيئة رقمية متكاملة وآمنة.</p>
+                    <div class="hero-btns">
+                        <button id="google-signin-btn" class="google-btn">
+                            <span class="google-icon-wrap">
+                                <img src="https://i.ibb.co/wznLz3x/google-icon.png" alt="Google">
+                            </span>
+                            تسجيل الدخول بحساب Google
+                        </button>
+                        <a href="#services" class="scroll-btn">
+                            اكتشف المزيد
+                            <span class="arrow-down">
+                                <i class="fas fa-chevron-down" style="font-size:0.72rem;color:var(--primary)"></i>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-num">+500</span>
+                            <span class="stat-label">مشروع مسجّل</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-num">+120</span>
+                            <span class="stat-label">مستثمر نشط</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-num">4</span>
+                            <span class="stat-label">خدمات متكاملة</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-num">100%</span>
+                            <span class="stat-label">حماية قانونية</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-illustration">
+                        <i class="fas fa-balance-scale big-icon"></i>
+                        <div class="cards-stack">
+                            <div class="mini-card">
+                                <div class="mini-card-icon" style="background:var(--primary)"><i class="fas fa-shield-alt"></i></div>
+                                <div>
+                                    <div class="mini-card-text">براءة اختراع محمية</div>
+                                    <div class="mini-card-sub">تم التسجيل بنجاح ✓</div>
+                                </div>
+                            </div>
+                            <div class="mini-card">
+                                <div class="mini-card-icon" style="background:#0e9f6e"><i class="fas fa-handshake"></i></div>
+                                <div>
+                                    <div class="mini-card-text">مستثمر جديد</div>
+                                    <div class="mini-card-sub">عرض تمويل مقبول ✓</div>
+                                </div>
+                            </div>
+                            <div class="mini-card">
+                                <div class="mini-card-icon" style="background:var(--accent)"><i class="fas fa-file-contract"></i></div>
+                                <div>
+                                    <div class="mini-card-text">عقد ترخيص</div>
+                                    <div class="mini-card-sub">جاهز للتوقيع ✓</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY SANAD -->
+    <section class="why-section">
+        <div class="container">
+            <div class="section-header" style="margin-bottom:40px">
+                <span class="section-tag" style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.25)">لماذا سند؟</span>
+                <h2 class="section-title" style="color:white;margin-top:10px">ثلاثة أسباب تجعلنا الخيار الأمثل</h2>
+            </div>
+            <div class="why-grid">
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>سريع وفعّال</h3>
+                    <p>إجراءات تسجيل مبسّطة ورقمية تختصر الوقت والجهد، من البداية حتى الحصول على الحماية القانونية الكاملة.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-lock"></i></div>
+                    <h3>آمن وموثوق</h3>
+                    <p>بنية تحتية رقمية مشفرة تضمن سرية مشاريعك ومستنداتك في جميع مراحل العملية القانونية.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-award"></i></div>
+                    <h3>متخصص ومحترف</h3>
+                    <p>فريق من الخبراء القانونيين والمتخصصين في الملكية الفكرية يرافقك خطوة بخطوة نحو النجاح.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="services-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">خدماتنا</span>
+                <h2 class="section-title">خدمات منصة سند</h2>
+                <p class="section-sub">كل ما تحتاجه لحماية ابتكارك ونموّه في مكان واحد</p>
+            </div>
+            <div class="service-list">
+                <div class="service-item" data-num="01" style="--card-color:#1e5fa8">
+                    <div class="service-icon-wrap" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe)">
+                        <i class="fas fa-shield-alt" style="color:#1e5fa8"></i>
+                    </div>
+                    <div class="service-details">
+                        <h3>1. الحماية القانونية الرقمية والتسجيل</h3>
+                        <p>تسهيل وأتمتة إجراءات تسجيل براءات الاختراع، العلامات التجارية، والنماذج الصناعية عبر بيئة رقمية آمنة ومتكاملة.</p>
+                    </div>
+                </div>
+                <div class="service-item" data-num="02" style="--card-color:#5b21b6">
+                    <div class="service-icon-wrap" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe)">
+                        <i class="fas fa-search" style="color:#5b21b6"></i>
+                    </div>
+                    <div class="service-details">
+                        <h3>2. محرك بحث متقدم في البراءات</h3>
+                        <p>استكشف الابتكارات العالمية، وتأكد من جِدة فكرتك قبل البدء، وحدد الفرص المتاحة في الملك العام بذكاء.</p>
+                    </div>
+                </div>
+                <div class="service-item" data-num="03" style="--card-color:#0e9f6e">
+                    <div class="service-icon-wrap" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0)">
+                        <i class="fas fa-store" style="color:#065f46"></i>
+                    </div>
+                    <div class="service-details">
+                        <h3>3. سوق الاستثمار (Marketplace)</h3>
+                        <p>اعرض مشروعك المبتكر بشكل احترافي على المستثمرين (Angels & VC) وابحث عن فرص تمويل حقيقية وشركاء نجاح.</p>
+                    </div>
+                </div>
+                <div class="service-item" data-num="04" style="--card-color:#e3a008">
+                    <div class="service-icon-wrap" style="background:linear-gradient(135deg,#fef3c7,#fde68a)">
+                        <i class="fas fa-file-contract" style="color:#92400e"></i>
+                    </div>
+                    <div class="service-details">
+                        <h3>4. التوجيه القانوني وإدارة العقود</h3>
+                        <p>صياغة آمنة لعقود الترخيص ونقل الملكية الفكرية، مع تقديم مرافقة قانونية متخصصة لفحص مشاريعك.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GUIDE & ABOUT -->
+    <section id="guide" class="guide-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">معلومات</span>
+                <h2 class="section-title">من نحن ودليل الاستخدام</h2>
+            </div>
+            <div class="guide-flex">
+                <div class="guide-content" id="about">
+                    <div class="guide-content-header">
+                        <div class="guide-icon"><i class="fas fa-building"></i></div>
+                        <h3>من نحن</h3>
+                    </div>
+                    <p>مؤسسة ناشئة جزائرية تهدف لبناء جسر آمن بين الابتكار والقانون، لتحويل الأفكار من براءات على ورق إلى أصول اقتصادية مدرة للربح. نؤمن بأن كل فكرة تستحق الحماية والازدهار.</p>
+                </div>
+                <div class="guide-content" id="user-guide">
+                    <div class="guide-content-header">
+                        <div class="guide-icon"><i class="fas fa-book-open"></i></div>
+                        <h3>دليل الاستخدام السريع</h3>
+                    </div>
+                    <ol>
+                        <li>قم بتسجيل الدخول بحساب قوقل الخاص بك.</li>
+                        <li>ابدأ البحث عن البراءات السابقة لضمان نجاح فكرتك.</li>
+                        <li>ارفع ملفات مشروعك واطلب خدمة "الفحص القانوني".</li>
+                        <li>اعرض مشروعك في "السوق" أمام المستثمرين.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <div class="brand-name-footer">SANAD</div>
+                    <p>منصة سند الرقمية لخدمات الملكية الفكرية والابتكار الآمن — الجزائر.</p>
+                </div>
+                <div id="contact" class="footer-section">
+                    <h4>اتصل بنا</h4>
+                    <div class="footer-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>الجزائر العاصمة، الجزائر</span>
+                    </div>
+                    <p>
+                        <strong>contact@sanad-platform.com</strong><br>
+                        <strong>0663184910</strong>
+                    </p>
+                </div>
+            </div>
+            <div class="footer-social">
+                <a href="https://facebook.com/sanad" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com/sanad" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://tiktok.com/@sanad" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 SANAD | جميع الحقوق محفوظة</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- زر واتساب عائم -->
+    <a href="https://wa.me/213663184910" target="_blank" class="float-btn">
+        <i class="fab fa-whatsapp"></i>
+        <span class="float-tooltip">تواصل معنا على واتساب</span>
+    </a>
+
+</body>
+</html>
